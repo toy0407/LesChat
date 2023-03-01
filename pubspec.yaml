@@ -42,6 +42,12 @@ dependencies:
   modal_bottom_sheet: ^2.1.2
   go_router: ^6.0.1
   flutter_svg: ^1.1.6
+  intl: ^0.18.0
+  equatable: ^2.0.5
+  http: ^0.13.5
+  dartz: ^0.10.1
+  get_it: ^7.2.0
+  shared_preferences: ^2.0.18
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../presentation/pages/forgot_password_page.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/register_page.dart';
@@ -23,6 +24,10 @@ class AppRouter {
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const LoginPage(),
       ),
+      GoRoute(
+          path: '/forgotPassword',
+          parentNavigatorKey: rootNavigatorKey,
+          builder: ((context, state) => const ForgotPasswordPage())),
       // register route
       GoRoute(
         path: '/register',
@@ -55,11 +60,11 @@ class AppRouter {
         builder: (context, state) => const ShowAndAddUsersPage(),
       ),
       GoRoute(
-        path: '/message/:chatId',
+        path: '/chat/:chatId',
         builder: (context, state) => const ChatMessagePage(),
       ),
       GoRoute(
-        path: '/message/:groupId',
+        path: '/group/:groupId',
         builder: (context, state) => const GroupMessagePage(),
       )
     ],
