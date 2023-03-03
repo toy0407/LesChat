@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:leschat/presentation/blocs/cubit/conversations_cubit.dart';
 
 class ShowAndAddUsersPage extends StatefulWidget {
   const ShowAndAddUsersPage({super.key});
@@ -9,18 +11,18 @@ class ShowAndAddUsersPage extends StatefulWidget {
 }
 
 class _ShowAndAddUsersPageState extends State<ShowAndAddUsersPage> {
-  late TextEditingController searchUsersTextEditingController;
+  late TextEditingController _searchUsersTextEditingController;
 
   @override
   void initState() {
     super.initState();
-    searchUsersTextEditingController = TextEditingController();
+    _searchUsersTextEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    searchUsersTextEditingController.dispose();
+    _searchUsersTextEditingController.dispose();
   }
 
   @override
@@ -35,10 +37,15 @@ class _ShowAndAddUsersPageState extends State<ShowAndAddUsersPage> {
           child: Column(
             children: [
               CupertinoSearchTextField(
-                controller: searchUsersTextEditingController,
+                controller: _searchUsersTextEditingController,
+                onChanged: (value) => _getUsersByQuery(value),
               )
             ],
           ),
         ));
+  }
+
+  _getUsersByQuery(String query) {
+    BlocProvider.of<ConversationsCubit>(context).getUsersByQuery(query);
   }
 }

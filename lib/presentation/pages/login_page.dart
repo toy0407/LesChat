@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -27,19 +26,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    emailTextEditingController.dispose();
+    passwordTextEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, authState) {
-          if (authState is AuthSuccess) {
+          if (authState is LoginSuccess) {
             loginButton = true;
-            context.go('/chats');
+            context.go('/home');
           }
-          if (authState is AuthLoading) {
+          if (authState is LoginLoading) {
             loginButton = false;
           }
-          if (authState is AuthFailure) {
+          if (authState is LoginFailure) {
             loginButton = true;
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Login Failed')));
@@ -124,22 +130,41 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset('assets/images/google.svg')),
+                      onPressed: () {},
+                      icon: SvgPicture.asset(
+                        'assets/images/google.svg',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ),
                     const SizedBox(width: 20),
                     IconButton(
                         onPressed: () {},
-                        icon: SvgPicture.asset('assets/images/apple.svg')),
+                        icon: SvgPicture.asset(
+                          'assets/images/apple.svg',
+                          width: 30,
+                          height: 30,
+                        )),
                     const SizedBox(width: 20),
                     IconButton(
                         onPressed: () {},
-                        icon: SvgPicture.asset('assets/images/facebook.svg')),
+                        icon: SvgPicture.asset(
+                          'assets/images/facebook.svg',
+                          width: 30,
+                          height: 30,
+                        )),
                     const SizedBox(width: 20),
                     IconButton(
                         onPressed: () {
-                          context.push('/register');
+                          context.push(
+                            '/register',
+                          );
                         },
-                        icon: SvgPicture.asset('assets/images/email.svg')),
+                        icon: SvgPicture.asset(
+                          'assets/images/email.svg',
+                          width: 30,
+                          height: 30,
+                        )),
                   ],
                 ),
               ],
@@ -158,9 +183,9 @@ class _LoginPageState extends State<LoginPage> {
 
   String? passwordValidator(String? password) {
     if (password!.isEmpty) return 'Please enter password';
-    final bool passwordValid =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-            .hasMatch(password);
+    // final bool passwordValid =
+    //     RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+    //         .hasMatch(password);
     // return passwordValid ? null : 'Invalid Password';
     //TODO: Remove false validation
     return null;

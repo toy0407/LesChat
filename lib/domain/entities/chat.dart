@@ -1,5 +1,3 @@
-import 'message.dart';
-
 class Chat {
   late String? chatId;
   late String? userId_1;

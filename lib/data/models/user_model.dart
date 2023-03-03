@@ -1,5 +1,3 @@
-import '../../domain/entities/chat.dart';
-import '../../domain/entities/group.dart';
 import '../../domain/entities/user.dart';
 
 class UserModel extends User {

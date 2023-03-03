@@ -51,9 +51,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signUp(User user) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+  Future<UserModel> signUp(User user) async {
+    var url = '${AppStrings.backendLink}/users/signup';
+    Map data = {
+      'username': user.username,
+      'name': user.name,
+      'email': user.email,
+      'password': user.password
+    };
+    var response = await http.post(Uri.parse(url),
+        headers: {"Content-Type": "application/json"}, body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      var currentUser = UserModel.fromJson(json.decode(response.body));
+      final prefs = await SharedPreferences.getInstance();
+      return currentUser;
+    } else {
+      throw Exception();
+    }
   }
 
   @override

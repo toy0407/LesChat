@@ -7,6 +7,7 @@ import 'package:leschat/data/repositories/auth_repository_impl.dart';
 import 'package:leschat/data/repositories/chat_repository_impl.dart';
 import 'package:leschat/domain/repositories/chat_repository.dart';
 import 'package:leschat/domain/usecases/chats/get_all_chats_usecase.dart';
+import 'package:leschat/domain/usecases/chats/get_users_by_query_usecase.dart';
 import 'package:leschat/presentation/blocs/cubit/conversations_cubit.dart';
 import '/domain/repositories/auth_repository.dart';
 import '/domain/usecases/auth/forgot_password_usecase.dart';
@@ -32,8 +33,8 @@ Future<void> init() async {
       getCurrentUserUsecase: sl.call(),
       signOutUsecase: sl.call(),
       updateUserUsecase: sl.call()));
-  sl.registerFactory<ConversationsCubit>(
-      () => ConversationsCubit(getAllChatsUsecase: sl.call()));
+  sl.registerFactory<ConversationsCubit>(() => ConversationsCubit(
+      getAllChatsUsecase: sl.call(), getUsersByQueryUsecase: sl.call()));
 
   // Usecases
   sl.registerLazySingleton<SignInUsecase>(
@@ -52,12 +53,14 @@ Future<void> init() async {
       () => UpdateUserUsecase(authRepository: sl.call()));
   sl.registerLazySingleton<GetAllChatsUsecase>(
       () => GetAllChatsUsecase(chatRepository: sl.call()));
+  sl.registerLazySingleton<GetUsersByQueryUsecase>(
+      () => GetUsersByQueryUsecase(chatRepository: sl.call()));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(authRemoteDataSource: sl.call()));
-  sl.registerLazySingleton<ChatRepository>(
-      () => ChatRepositoryImpl(chatLocalDataSource: sl.call()));
+  sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(
+      chatLocalDataSource: sl.call(), chatRemoteDataSource: sl.call()));
 
   // Local Data Source
   sl.registerLazySingleton<ChatLocalDataSource>(

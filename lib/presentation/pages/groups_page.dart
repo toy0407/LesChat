@@ -8,7 +8,8 @@ class GroupsPage extends StatefulWidget {
   State<GroupsPage> createState() => _GroupsPageState();
 }
 
-class _GroupsPageState extends State<GroupsPage> {
+class _GroupsPageState extends State<GroupsPage>
+    with AutomaticKeepAliveClientMixin {
   late TextEditingController _searchTextEditingController;
 
   @override
@@ -18,6 +19,9 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void dispose() {
     super.dispose();
     _searchTextEditingController.dispose();
@@ -25,19 +29,8 @@ class _GroupsPageState extends State<GroupsPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Groups',
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-        centerTitle: false,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                CupertinoIcons.ellipsis_vertical,
-              ))
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(children: [

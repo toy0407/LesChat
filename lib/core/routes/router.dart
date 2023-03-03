@@ -4,15 +4,12 @@ import '../../presentation/pages/forgot_password_page.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/register_page.dart';
-import '../../presentation/pages/chats_page.dart';
-import '../../presentation/pages/groups_page.dart';
 import '../../presentation/pages/show_n_add_users_page.dart';
 import '../../presentation/pages/group_message_page.dart';
 import '../../presentation/pages/chat_message_page.dart';
 
 class AppRouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>();
-  static final shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
@@ -34,26 +31,13 @@ class AppRouter {
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const RegisterPage(),
       ),
-      ShellRoute(
-        navigatorKey: shellNavigatorKey,
-        routes: [
-          GoRoute(
-            path: '/chats',
-            parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) => const ChatsPage(),
-          ),
-          GoRoute(
-            path: '/groups',
-            parentNavigatorKey: shellNavigatorKey,
-            builder: (context, state) => const GroupsPage(),
-          ),
-        ],
-        builder: (context, state, child) {
-          return HomePage(
-            child: child,
-          );
-        },
+
+      GoRoute(
+        path: '/home',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const HomePage(),
       ),
+
       GoRoute(
         path: '/showAndAddUsers',
         parentNavigatorKey: rootNavigatorKey,
@@ -61,10 +45,12 @@ class AppRouter {
       ),
       GoRoute(
         path: '/chat/:chatId',
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const ChatMessagePage(),
       ),
       GoRoute(
         path: '/group/:groupId',
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const GroupMessagePage(),
       )
     ],

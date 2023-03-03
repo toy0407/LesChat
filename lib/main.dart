@@ -30,12 +30,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'LesChat',
         theme: FlexThemeData.light(
+            useMaterial3: false,
             scheme: FlexScheme.green,
             appBarStyle: FlexAppBarStyle.scaffoldBackground),
         darkTheme: FlexThemeData.dark(
+            useMaterial3: true,
             scheme: FlexScheme.green,
             appBarStyle: FlexAppBarStyle.scaffoldBackground),
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         routerConfig: router,
       ),
     );

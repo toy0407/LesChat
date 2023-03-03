@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:leschat/data/models/chat_model.dart';
+import 'package:leschat/domain/entities/user.dart';
 
 import 'chat_remote_datasource.dart';
 import '../../../domain/entities/chat.dart';
@@ -22,10 +23,15 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       for (var element in chats) {
         chatList.add(ChatModel.fromJson(element));
       }
-      print(chatList);
       return chatList;
     } else {
       throw Exception();
     }
+  }
+
+  @override
+  Future<List<User>> getUsersByQuery(String query) {
+    // TODO: implement getUsersByQuery
+    throw UnimplementedError();
   }
 }

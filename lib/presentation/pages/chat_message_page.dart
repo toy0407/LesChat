@@ -11,8 +11,10 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(children: []),
+      appBar: AppBar(
+        title: const Text('Friend'),
+        centerTitle: false,
+      ),
     );
   }
 }
