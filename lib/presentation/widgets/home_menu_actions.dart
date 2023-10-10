@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../blocs/cubit/auth_cubit.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
 
 class HomeMenuActions extends StatefulWidget {
-  const HomeMenuActions({super.key});
+  final AuthBloc authBloc;
+  const HomeMenuActions({super.key, required this.authBloc});
 
   @override
   State<HomeMenuActions> createState() => _HomeMenuActionsState();
@@ -17,6 +17,8 @@ class _HomeMenuActionsState extends State<HomeMenuActions> {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       icon: const Icon(CupertinoIcons.ellipsis_vertical),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(18.0))),
       itemBuilder: ((context) {
         return [
           const PopupMenuItem(
@@ -40,7 +42,7 @@ class _HomeMenuActionsState extends State<HomeMenuActions> {
           case 1:
             break;
           case 2:
-            BlocProvider.of<AuthCubit>(context).signOut();
+            widget.authBloc.add(AuthSignOutEvent());
             context.go('/login');
             break;
         }

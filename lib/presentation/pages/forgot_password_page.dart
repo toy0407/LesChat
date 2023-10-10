@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:leschat/presentation/blocs/cubit/auth_cubit.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({super.key});
+  final AuthBloc authBloc;
+  const ForgotPasswordPage({super.key, required this.authBloc});
 
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
@@ -61,8 +61,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           ElevatedButton(
               onPressed: () {
                 if (_forgotPasswordFormKey.currentState!.validate()) {
-                  BlocProvider.of<AuthCubit>(context)
-                      .forgotPassword(_emailTextEditingController.text);
+                  widget.authBloc.add(AuthForgotPasswordEvent(
+                      email: _emailTextEditingController.text));
                 }
               },
               child: const Text('Find Your Account'))

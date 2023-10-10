@@ -16,24 +16,27 @@ class UserModel extends User {
       super.groupsListIds});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-        userId: json['userId'] == null ? null : json['userId'] as String,
+    print('in user model');
+    var user = UserModel(
+        userId: json['_id'] == null ? null : json['_id'] as String,
         username: json['username'] == null ? null : json['username'] as String,
         name: json['name'] == null ? null : json['name'] as String,
-        userToken: json['token'] == null ? null : json['token'] as String,
+        // userToken: json['token'] == null ? null : json['token'] as String,
         // password: json['password'] as String,
-        phoneNumber:
-            json['phoneNumber'] == null ? null : json['phoneNumber'] as String,
-        about: json['about'] == null ? null : json['about'] as String,
+        // phoneNumber:
+        //     json['phoneNumber'] == null ? null : json['phoneNumber'] as String,
+        // about: json['about'] == null ? null : json['about'] as String,
         email: json['email'] == null ? null : json['email'] as String,
-        image: json['image'] == null ? null : json['image'] as String,
-        lastSeen: json['lastSeen'] == null ? null : json['lastSeen'] as String,
+        // image: json['image'] == null ? null : json['image'] as String,
+        // lastSeen: json['lastSeen'] == null ? null : json['lastSeen'] as String,
         chatsListIds: json['chatsList'] == null
             ? null
             : json['chatsList'] as List<String>,
         groupsListIds: json['groupsList'] == null
             ? null
             : json['groupsList'] as List<String>);
+    print(user);
+    return user;
   }
 
   Map<String, dynamic> toJson(UserModel user) => <String, dynamic>{

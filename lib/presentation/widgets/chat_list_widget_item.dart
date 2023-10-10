@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ChatListWidgetItem extends StatefulWidget {
-  late String username, lastMessage;
-  ChatListWidgetItem(
+  final String username, lastMessage;
+  const ChatListWidgetItem(
       {super.key, required this.username, required this.lastMessage});
 
   @override

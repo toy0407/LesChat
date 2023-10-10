@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leschat/domain/entities/user.dart';
-import 'package:leschat/presentation/blocs/cubit/auth_cubit.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final AuthBloc authBloc;
+  const LoginPage({super.key, required this.authBloc});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -36,7 +37,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocListener<AuthCubit, AuthState>(
+      body: BlocListener<AuthBloc, AuthState>(
+        bloc: widget.authBloc,
         listener: (context, authState) {
           if (authState is LoginSuccess) {
             loginButton = true;
@@ -63,9 +65,9 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text('Welcome to Leschat',
                     style:
                         TextStyle(fontSize: 32, fontWeight: FontWeight.w600)),
@@ -104,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                     context.push('/forgotPassword');
                   },
                 ),
-                BlocBuilder<AuthCubit, AuthState>(
+                BlocBuilder<AuthBloc, AuthState>(
+                  bloc: widget.authBloc,
                   builder: (context, authState) {
                     return loginButton
                         ? ElevatedButton(
@@ -115,8 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                                     passwordTextEditingController.text;
                                 User user =
                                     User(email: email, password: password);
-                                BlocProvider.of<AuthCubit>(context)
-                                    .signIn(user);
+                                widget.authBloc
+                                    .add(AuthSignInEvent(user: user));
                               }
                             },
                             child: const Text('Login'))

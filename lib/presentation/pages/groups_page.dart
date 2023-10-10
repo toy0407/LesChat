@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage({super.key});
+  final AuthBloc authBloc;
+  const GroupsPage({super.key, required this.authBloc});
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();

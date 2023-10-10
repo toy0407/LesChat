@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leschat/domain/entities/user.dart';
-import 'package:leschat/presentation/blocs/cubit/auth_cubit.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final AuthBloc authBloc;
+  const RegisterPage({super.key, required this.authBloc});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -16,12 +17,14 @@ class _RegisterPageState extends State<RegisterPage> {
   late TextEditingController emailTextEditingController;
   late TextEditingController passwordTextEditingController;
   late TextEditingController confirmPasswordTextEditingController;
+  late TextEditingController usernameTextEditingController;
   final GlobalKey<FormState> _registerFormKey = GlobalKey();
   bool registerButton = true;
 
   @override
   void initState() {
     super.initState();
+    usernameTextEditingController = TextEditingController();
     nameTextEditingController = TextEditingController();
     emailTextEditingController = TextEditingController();
     passwordTextEditingController = TextEditingController();
@@ -31,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void dispose() {
     super.dispose();
+    usernameTextEditingController.dispose();
     nameTextEditingController.dispose();
     emailTextEditingController.dispose();
     passwordTextEditingController.dispose();
@@ -41,7 +45,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: BlocListener<AuthCubit, AuthState>(
+        body: BlocListener<AuthBloc, AuthState>(
+          bloc: widget.authBloc,
           listener: (context, authState) {
             if (authState is RegisterSuccess) {
               registerButton = true;
@@ -66,9 +71,9 @@ class _RegisterPageState extends State<RegisterPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text('Welcome to Leschat', style: TextStyle(fontSize: 32)),
                 SizedBox(height: 10),
                 Text('Register to get started', style: TextStyle(fontSize: 20)),
@@ -82,6 +87,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     key: _registerFormKey,
                     child: Column(
                       children: [
+                        TextFormField(
+                          controller: usernameTextEditingController,
+                          validator: (username) => nameValidator(username),
+                          decoration:
+                              const InputDecoration(hintText: 'Enter username'),
+                        ),
+                        const SizedBox(height: 10),
                         TextFormField(
                           controller: nameTextEditingController,
                           validator: (name) => nameValidator(name),
@@ -115,12 +127,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     )),
                 const SizedBox(height: 10),
-                BlocBuilder<AuthCubit, AuthState>(
+                BlocBuilder<AuthBloc, AuthState>(
+                  bloc: widget.authBloc,
                   builder: (context, state) {
                     return registerButton
                         ? ElevatedButton(
                             onPressed: () {
                               if (_registerFormKey.currentState!.validate()) {
+                                String username =
+                                    usernameTextEditingController.text;
                                 String name = nameTextEditingController.text;
                                 String email = emailTextEditingController.text;
                                 String password =
@@ -131,11 +146,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                             .text) ==
                                     0) {
                                   User user = User(
+                                      username: username,
                                       name: name,
                                       email: email,
                                       password: password);
-                                  BlocProvider.of<AuthCubit>(context)
-                                      .signUp(user);
+                                  widget.authBloc
+                                      .add(AuthSignUpEvent(user: user));
                                 }
                               }
                             },
@@ -162,7 +178,9 @@ class _RegisterPageState extends State<RegisterPage> {
     //TODO: Name regex not working
     final bool nameValid =
         RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]').hasMatch(name);
-    return nameValid ? null : 'Enter valid name';
+    print(nameValid);
+    return null;
+    // return nameValid ? null : 'Enter valid name';
   }
 
   emailvalidator(String? email) {

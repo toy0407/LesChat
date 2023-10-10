@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:leschat/presentation/pages/chat_message_page.dart';
+import '../../dependency_injection.dart';
 import '../blocs/cubit/conversations_cubit.dart';
 import '../widgets/chat_list_widget_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/chat.dart';
 
 class ChatsPage extends StatefulWidget {
-  const ChatsPage({super.key});
+  final AuthBloc authBloc;
+  const ChatsPage({super.key, required this.authBloc});
 
   @override
   State<ChatsPage> createState() => _ChatsPageState();
@@ -92,8 +96,14 @@ class _ChatsPageState extends State<ChatsPage>
                     itemBuilder: ((context, index) {
                       return GestureDetector(
                         onTap: () {
-                          var chatId = chatsList.elementAt(index).chatId;
-                          context.push('/chat/$chatId');
+                          var chatDetails = chatsList.elementAt(index);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatMessagePage(
+                                    chatBloc: sl.call(),
+                                    chatDetails: chatDetails),
+                              ));
                         },
                         child: ChatListWidgetItem(
                           username: chatsList.elementAt(index).userId_1!,

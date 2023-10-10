@@ -2,7 +2,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:leschat/presentation/blocs/cubit/auth_cubit.dart';
+import 'package:leschat/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:leschat/presentation/blocs/cubit/conversations_cubit.dart';
 import 'core/routes/router.dart';
 import 'dependency_injection.dart' as di;
@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
     GoRouter router = AppRouter.router;
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (_) => di.sl<AuthCubit>()..appStarted(),
+        BlocProvider<AuthBloc>(
+          create: (_) => di.sl<AuthBloc>(),
         ),
         BlocProvider<ConversationsCubit>(
             create: (_) => di.sl<ConversationsCubit>()..appStarted())
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'LesChat',
         theme: FlexThemeData.light(
-            useMaterial3: false,
-            scheme: FlexScheme.green,
+            useMaterial3: true,
+            scheme: FlexScheme.deepPurple,
             appBarStyle: FlexAppBarStyle.scaffoldBackground),
         darkTheme: FlexThemeData.dark(
             useMaterial3: true,

@@ -61,10 +61,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     };
     var response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: json.encode(data));
-
+    print(response.body);
     if (response.statusCode == 200) {
       var currentUser = UserModel.fromJson(json.decode(response.body));
+      print(currentUser);
       final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('selfUserId', currentUser.userId!);
+      print("authremdsimplsuccess");
       return currentUser;
     } else {
       throw Exception();
